@@ -29,16 +29,13 @@
         }
 
         html, body, video {
+            top: 0;
+            left: 0;
             margin: 0;
             width: 100%;
             height: 100%;
             object-fit: fill;
             overflow: hidden;
-        }
-
-        html, body, video, #input-awaiter {
-            top: 0;
-            left: 0;
         }
 
         @keyframes input-await-bg-anim {
@@ -66,9 +63,6 @@
             font-size: 2em;
             background: url("niko-oneshot.jpg");
             animation: input-await-bg-anim 16s linear infinite;
-        }
-
-        #input-awaiter {
             -webkit-text-stroke-width: 1px;
             -webkit-text-stroke-color: black;
         }
@@ -284,7 +278,7 @@
             const timeElement = document.querySelector("#time");
             let secs = parseInt(localStorage.getItem("niko_oneshot") ?? "0");
             const updateTime = () => {
-                if (!document.hasFocus() || !active)
+                if (document.visibilityState != "visible" || !active)
                     return;
 
                 secs++;
