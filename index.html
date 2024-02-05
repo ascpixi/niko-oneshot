@@ -22,6 +22,8 @@
             position: absolute;
             top: 0;
             left: 0;
+            font-family: "Comic Sans MS", monospace;
+            color: white;
         }
 
         body {
@@ -43,12 +45,15 @@
             width: 100vw;
             height: 100vh;
             background: black;
-            font-family: "Comic Sans MS", monospace;
-            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 2em;
+        }
+
+        #time {
+            bottom: 2em;
+            left: 2em;
         }
 
     </style>
@@ -109,6 +114,7 @@
 <body>
     <!-- this site was made by @ascpixi. check the console for more details -->
     <video autoplay loop muted src="./noik-oenshot.mp4"></video>
+    <p id="time"></p>
 
     <noscript>
         <audio src="./shoeshine.ogg" autoplay loop></audio>
@@ -198,8 +204,52 @@
                 setIcon(smol);
 
                 document.body.style.cursor = `url('${smol}'), auto`;
-                printImage(big, 1.5);
+                // printImage(big, 1.5);
             }, 100);
+
+            /**
+             * @param {number} seconds
+             */
+            const formatTimespan = (seconds) => {
+                const days = Math.floor(seconds / (3600 * 24));
+                const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const remainingSeconds = seconds % 60;
+
+                let timeString = "you've been staring at oneshot niko on a roomba for";
+                let hasDays = false;
+                let hasHours = false;
+                let hasMinutes = false;
+
+                if (days > 0) {
+                    timeString += ` ${days} day${days > 1 ? 's' : ''}`;
+                    hasDays = true;
+                }
+                if (hours > 0 || hasDays) {
+                    timeString += ` ${hours} hour${hours > 1 ? 's' : ''}`;
+                    hasHours = true;
+                }
+                if (minutes > 0 || hasHours) {
+                    timeString += ` ${minutes} minute${minutes > 1 ? 's' : ''}`;
+                    hasMinutes = true;
+                }
+                if (remainingSeconds > 0 || hasMinutes) {
+                    timeString += ` ${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''}`;
+                }
+
+                return timeString;
+            }
+
+            const timeElement = document.querySelector("#time");
+            let secs = parseInt(localStorage.getItem("niko_oneshot") ?? "0");
+            setInterval(() => {
+                if (!document.hasFocus())
+                    return;
+
+                secs++;
+                localStorage.setItem("niko_oneshot", secs);
+                timeElement.innerHTML = formatTimespan(secs);
+            }, 1000);
         })();
 
     </script>
