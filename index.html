@@ -17,11 +17,9 @@
     <meta name="twitter:image" content="https://ascpixi.github.io/niko-oneshot/niko-oneshot.jpg" />
 
     <style>
-        * {
+        body > * {
             user-select: none;
             position: absolute;
-            top: 0;
-            left: 0;
             font-family: "Comic Sans MS", monospace;
             color: white;
         }
@@ -38,6 +36,11 @@
             overflow: hidden;
         }
 
+        html, body, video, #input-awaiter {
+            top: 0;
+            left: 0;
+        }
+
         #input-awaiter {
             top: 0;
             left: 0;
@@ -51,11 +54,17 @@
             font-size: 2em;
         }
 
-        #time {
+        #info {
+            position: absolute;
             bottom: 2em;
             left: 2em;
+            height: auto;
         }
 
+        #info p {
+            margin-bottom: 0em;
+            margin-top: .25em;
+        }
     </style>
 </head>
     <!-- this site was made by @ascpixi. check the console for more details -->
@@ -114,7 +123,10 @@
 <body>
     <!-- this site was made by @ascpixi. check the console for more details -->
     <video autoplay loop muted src="./noik-oenshot.mp4"></video>
-    <p id="time"></p>
+    <div id="info">
+        <p id="time"></p>
+        <p><a href="#" id="hide">(hide...?)</a></p>
+    </div>
 
     <noscript>
         <audio src="./shoeshine.ogg" autoplay loop></audio>
@@ -199,12 +211,12 @@
             };
 
             setInterval(() => {
-                const smol = getVideoFrame(32, 32);
-                const big = getVideoFrame(256, 256);
-                setIcon(smol);
+                // const smol = getVideoFrame(32, 32);
+                // const big = getVideoFrame(256, 256);
+                // setIcon(smol);
 
-                document.body.style.cursor = `url('${smol}'), auto`;
-                // printImage(big, 1.5);
+                // document.body.style.cursor = `url('${smol}'), auto`;
+                // // printImage(big, 1.5);
             }, 100);
 
             /**
@@ -240,16 +252,23 @@
                 return timeString;
             }
 
+            document.querySelector("#hide").addEventListener("click", () => {
+                document.querySelector("#info").style.display = "none";
+            })
+
             const timeElement = document.querySelector("#time");
             let secs = parseInt(localStorage.getItem("niko_oneshot") ?? "0");
-            setInterval(() => {
+            const updateTime = () => {
                 if (!document.hasFocus())
                     return;
 
                 secs++;
                 localStorage.setItem("niko_oneshot", secs);
                 timeElement.innerHTML = formatTimespan(secs);
-            }, 1000);
+            }
+
+            setInterval(updateTime, 1000);
+            updateTime();
         })();
 
     </script>
