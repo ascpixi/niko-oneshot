@@ -41,6 +41,18 @@
             left: 0;
         }
 
+        @keyframes input-await-bg-anim {
+            0% {
+                background-position-x: 0%;
+                background-position-y: 0%;
+            }
+
+            100% {
+                background-position-x: 100%;
+                background-position-y: 100%;
+            }
+        }
+
         #input-awaiter {
             top: 0;
             left: 0;
@@ -52,6 +64,13 @@
             justify-content: center;
             align-items: center;
             font-size: 2em;
+            background: url("niko-oneshot.jpg");
+            animation: input-await-bg-anim 16s linear infinite;
+        }
+
+        #input-awaiter {
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: black;
         }
 
         #info {
@@ -134,6 +153,8 @@
 
     <script>
         (async () => {
+            let active = false;
+
             const playAudio = async () => {
                 const audio = new Audio("./shoeshine.ogg");
                 audio.loop = true;
@@ -159,6 +180,7 @@
 
             try {
                 await playAudio();
+                active = true;
             } catch (e) {
                 // await input from the user
                 const overlay = document.body.appendChild(Object.assign(document.createElement("div"), {
@@ -171,6 +193,9 @@
                     playAudio();
                     document.body.removeEventListener("click", handler);
                     document.body.removeEventListener("keydown", handler);
+
+                    active = true;
+                    updateTime();
                 }
 
                 document.body.addEventListener("click", handler);
@@ -259,7 +284,7 @@
             const timeElement = document.querySelector("#time");
             let secs = parseInt(localStorage.getItem("niko_oneshot") ?? "0");
             const updateTime = () => {
-                if (!document.hasFocus())
+                if (!document.hasFocus() || !active)
                     return;
 
                 secs++;
