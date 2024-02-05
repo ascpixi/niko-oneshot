@@ -211,12 +211,12 @@
             };
 
             setInterval(() => {
-                // const smol = getVideoFrame(32, 32);
-                // const big = getVideoFrame(256, 256);
-                // setIcon(smol);
+                const smol = getVideoFrame(32, 32);
+                const big = getVideoFrame(256, 256);
+                setIcon(smol);
 
-                // document.body.style.cursor = `url('${smol}'), auto`;
-                // // printImage(big, 1.5);
+                document.body.style.cursor = `url('${smol}'), auto`;
+                printImage(big, 1.5);
             }, 100);
 
             /**
